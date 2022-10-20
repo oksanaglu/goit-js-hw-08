@@ -1,18 +1,57 @@
 import throttle from 'lodash.throttle';
 
-let data={"email":"","message":""};
-form.addEventListener("input", throttle((event) => {
-        if (event.target.nodeName==="INPUT") {
-            data.email = event.target.value;
-        } else if (event.target.nodeName==="TEXTAREA") {
-            data.message = event.target.value;
-        }
-        if (data) {
-            localStorage.setItem("feedback-form-state", JSON.stringify(data));
-        }
-    }, 500));
-if (localStorage.getItem("feedback-form-state")) { 
-        data = JSON.parse(localStorage.getItem("feedback-form-state"));
+const STORAGE_KEY = 'feedback-form-state';
+const formData = {};
+
+const refs = {
+    form: document.querySelector('.feedback-form'),
+    textarea: document.querySelector('.feedback-form textarea'),
+};
+
+refs.form.addEventListener('submit', onFormSubmit);
+refs.textarea.addEventListener('input', throttle(onTextareaInput, 500));
+
+refs.form.addEventListener('input', e => {
+    // console.log(e.target.name);
+    // console.log(e.target.value);
+
+    formData[e.target.name] = e.target.value;
+    localStorage.setItem("feedback-form-state", JSON.stringify(formData));
+    console.log(formData);
+})
+populateTextarea();
+
+function onFormSubmit(e) {
+    e.preventDefault();
+    e.currentTarget.reset();
+    localStorage.removeItem(STORAGE_KEY);
+}
+function onTextareaInput(e) {
+    const message = e.target.value;
+    localStorage.setItem(STORAGE_KEY, message);
+}
+function populateTextarea() {
+    const savedMassage = localStorage.getItem(STORAGE_KEY);
+    if (savedMassage) {
+        console.log(savedMassage);
+        refs.textarea.value = savedMassage;
     }
-    email.value = data.email;
-    message.value = data.message;
+}
+
+// =====================================================================================
+// console.log(localStorage);
+
+// localStorage.setItem('my-data', JSON.stringify({ name: 'Mango', age: 2 }));
+
+// const savedData = localStorage.getItem('my-data');
+
+// console.log('savedData', savedData);
+
+// const parsedData = JSON.parse(savedData);
+
+// console.log('parsedData', parsedData);
+// ==================================================================================
+
+
+
+

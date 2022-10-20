@@ -11,12 +11,9 @@ document.querySelector('.gallery').insertAdjacentHTML('beforeEnd', `<div class="
 const galleryContainer = document.querySelector(".gallery");
 
 
-let instance = new SimpleLightbox('.gallery a');
-instance.on('show.simplelightbox', function (event) {
-	event.preventDefault();
-  if (!event.target.classList.contains("gallery__image")) {
-    return;
-  }
+let instance = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250,
 });
 
 galleryContainer.addEventListener('keydown', e => {
@@ -27,6 +24,4 @@ galleryContainer.addEventListener('keydown', e => {
 
 
 console.log(galleryItems);
-
-
 

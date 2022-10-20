@@ -14,15 +14,15 @@ const iframe = document.querySelector('iframe');
     });
 
 const onPlay = function(data) {
-    onPlay=throttle((data)=>{
-        localStorage.setItem("videoplayer-current-time", data.seconds);
-    }, 1000)
+
+        localStorage.setItem("videoplayer-current-time", JSON.stringify(data));
+    
 };
 
-player.on('play', onPlay);
+player.on('play', throttle(onPlay, 1000));
 
-player.setCurrentTime(30.456).then(function(seconds) {
-    // seconds = the actual time that the player seeked to
+player.setCurrentTime(30.456).then(function (seconds) {
+      // seconds = the actual time that the player seeked to
 }).catch(function(error) {
     switch (error.name) {
         case 'RangeError':
@@ -35,3 +35,4 @@ player.setCurrentTime(30.456).then(function(seconds) {
     }
 });
 
+ 
