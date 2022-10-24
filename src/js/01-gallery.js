@@ -22,6 +22,5 @@ galleryContainer.addEventListener('keydown', e => {
     }
   });
 
-
 console.log(galleryItems);
 
